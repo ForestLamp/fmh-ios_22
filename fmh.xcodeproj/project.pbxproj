@@ -60,10 +60,12 @@
 		19C7A52F280DED24005000EB /* ProjectDiscription in Resources */ = {isa = PBXBuildFile; fileRef = 19C7A52E280DED24005000EB /* ProjectDiscription */; };
 		19C7A531280DED3B005000EB /* Guidelines in Resources */ = {isa = PBXBuildFile; fileRef = 19C7A530280DED3B005000EB /* Guidelines */; };
 		19EE65C32821BD060095C2EE /* AuthorizationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19EE65C22821BD060095C2EE /* AuthorizationError.swift */; };
+		9F1D774E2851DE7100480563 /* SpinningCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1D774D2851DE7100480563 /* SpinningCircleView.swift */; };
 		9F6B33A7282D01830031935A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6B33A6282D01830031935A /* Colors.swift */; };
 		9F828214282C399F00BE732A /* ModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F828213282C399F00BE732A /* ModuleBuilder.swift */; };
 		9F828219282C39D100BE732A /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F828218282C39D100BE732A /* LoadingViewController.swift */; };
 		9F828222282C3A4A00BE732A /* LoadingScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F828221282C3A4A00BE732A /* LoadingScreenPresenter.swift */; };
+		9FF3AECA284F6B9900BCFC52 /* Greetings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF3AEC9284F6B9900BCFC52 /* Greetings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,10 +124,12 @@
 		19C7A52E280DED24005000EB /* ProjectDiscription */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProjectDiscription; sourceTree = "<group>"; };
 		19C7A530280DED3B005000EB /* Guidelines */ = {isa = PBXFileReference; lastKnownFileType = text; path = Guidelines; sourceTree = "<group>"; };
 		19EE65C22821BD060095C2EE /* AuthorizationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationError.swift; sourceTree = "<group>"; };
+		9F1D774D2851DE7100480563 /* SpinningCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinningCircleView.swift; sourceTree = "<group>"; };
 		9F6B33A6282D01830031935A /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		9F828213282C399F00BE732A /* ModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBuilder.swift; sourceTree = "<group>"; };
 		9F828218282C39D100BE732A /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		9F828221282C3A4A00BE732A /* LoadingScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingScreenPresenter.swift; sourceTree = "<group>"; };
+		9FF3AEC9284F6B9900BCFC52 /* Greetings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Greetings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -421,6 +425,8 @@
 			isa = PBXGroup;
 			children = (
 				9F6B33A6282D01830031935A /* Colors.swift */,
+				9FF3AEC9284F6B9900BCFC52 /* Greetings.swift */,
+				9F1D774D2851DE7100480563 /* SpinningCircleView.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -544,6 +550,7 @@
 				19243E89282A6C4400A43CA8 /* UIViewController+Presentable.swift in Sources */,
 				19EE65C32821BD060095C2EE /* AuthorizationError.swift in Sources */,
 				19243E0C2829B40A00A43CA8 /* ModulesFactory.swift in Sources */,
+				9F1D774E2851DE7100480563 /* SpinningCircleView.swift in Sources */,
 				9F828219282C39D100BE732A /* LoadingViewController.swift in Sources */,
 				19BD1A6F281DBA3A00ED793A /* LoginProtocols.swift in Sources */,
 				19C7A51B280DECD0005000EB /* AppDelegate.swift in Sources */,
@@ -576,6 +583,7 @@
 				19064D88282049AE006D8768 /* LoginTextfield.swift in Sources */,
 				19243E012829B28D00A43CA8 /* UIAlertController+helper.swift in Sources */,
 				191EAA79281C01A9007B1397 /* APIResource.swift in Sources */,
+				9FF3AECA284F6B9900BCFC52 /* Greetings.swift in Sources */,
 				19243E352829C70E00A43CA8 /* AppCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

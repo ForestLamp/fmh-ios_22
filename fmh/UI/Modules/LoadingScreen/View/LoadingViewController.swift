@@ -11,6 +11,7 @@ class LoadingViewController: UIViewController {
     
     // MARK: - UI Elements
     
+    //Background image
     private let backgroundImage: UIImageView = {
        let backgroundImage = UIImageView()
 //        backgroundImage.contentMode = .scaleAspectFit
@@ -20,7 +21,7 @@ class LoadingViewController: UIViewController {
     }()
     
     // UIView for background image
-    private let viewForImage: UIView = {
+    private let viewForBackgroundImage: UIView = {
        let viewForImage = UIView()
         viewForImage.translatesAutoresizingMaskIntoConstraints = false
         return viewForImage
@@ -47,6 +48,8 @@ class LoadingViewController: UIViewController {
         let textLbl = UILabel()
         textLbl.translatesAutoresizingMaskIntoConstraints = false
         textLbl.numberOfLines = 0
+        textLbl.adjustsFontSizeToFitWidth = true
+        textLbl.minimumScaleFactor = 0.5
         textLbl.textAlignment = .center
         return textLbl
     }()
@@ -55,6 +58,10 @@ class LoadingViewController: UIViewController {
     
     var presenter: LoadingScreenPresenterProtocol!
     private let customColors = Colors()
+    private let greetings: [String] = Greetings().greeting
+//    private let spinningCircleView = SpinningCircleView()
+    private let screen = UIScreen.main.bounds
+    lazy var screenHeight = screen.size.height
     
     // MARK: - Life cicle
     
@@ -62,67 +69,110 @@ class LoadingViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setupLayout()
-        setGreeting(greeting: "Ответственно и осознанно нести добро людям")
+        setGreeting(greeting: greetings.randomElement()!)
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
+        constraintForLabel(viewHeight: screenHeight)
+        print(screenHeight)
     }
 }
 
 extension LoadingViewController: LoadingScreenProtocol {
+    
     func setGreeting(greeting: String) {
         textLbl.text = greeting
     }
+ /* Custom activity indicator
+     
+     private func configureSpinningCircleView(){
+         spinningCircleView.frame = CGRect(x: view.center.x - 20, y: view.center.y, width: 50, height: 50)
+         view.addSubview(spinningCircleView)
+         spinningCircleView.animate()
+     }
+     */
+    
+
 }
 
     // MARK: - Constraints
 
 extension LoadingViewController {
     
+    func constraintForLabel(viewHeight: CGFloat) {
+        
+        // UIView for label
+        self.view.addSubview(viewForLabel)
+        viewForLabel.backgroundColor = customColors.colorForView1
+        switch viewHeight {
+        case 548.0...568.0: //iPhone 5S,SE
+            NSLayoutConstraint.activate([
+                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
+                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
+                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        case 647.0...667.0: //iPhone 6,7,8
+            NSLayoutConstraint.activate([
+                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70),
+                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
+                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
+                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        case 716.0...736.0: //iPhone 6+,7+,8+
+            NSLayoutConstraint.activate([
+                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
+                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
+                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
+                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        case 792...875.0: //iPhone X,XS,XR
+            NSLayoutConstraint.activate([
+                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
+                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
+                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
+                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        case 876.0...1896.0: //iPhone XS_Max
+            NSLayoutConstraint.activate([
+                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
+                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
+                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
+                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        default: print("_____")
+        }
+    }
+    
     func setupLayout() {
         
-        var screenHeight: CGFloat {
-            return UIScreen.main.bounds.height
-        }
-        
-        // View for image
-        self.view.addSubview(viewForImage)
-        viewForImage.backgroundColor = customColors.colorForView1
+        // View for background image
+        self.view.addSubview(viewForBackgroundImage)
+        viewForBackgroundImage.backgroundColor = customColors.colorForView1
         NSLayoutConstraint.activate([
-            viewForImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            viewForImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            viewForImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            viewForImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/3)
+            viewForBackgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            viewForBackgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            viewForBackgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            viewForBackgroundImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/3)
         ])
         
         // BackgroundImage
-        self.viewForImage.addSubview(backgroundImage)
+        self.viewForBackgroundImage.addSubview(backgroundImage)
         NSLayoutConstraint.activate([
-            backgroundImage.topAnchor.constraint(equalTo: viewForImage.topAnchor),
-            backgroundImage.leadingAnchor.constraint(equalTo: viewForImage.leadingAnchor),
-            backgroundImage.trailingAnchor.constraint(equalTo: viewForImage.trailingAnchor),
-            backgroundImage.bottomAnchor.constraint(equalTo: viewForImage.bottomAnchor)
+            backgroundImage.topAnchor.constraint(equalTo: viewForBackgroundImage.topAnchor),
+            backgroundImage.leadingAnchor.constraint(equalTo: viewForBackgroundImage.leadingAnchor),
+            backgroundImage.trailingAnchor.constraint(equalTo: viewForBackgroundImage.trailingAnchor),
+            backgroundImage.bottomAnchor.constraint(equalTo: viewForBackgroundImage.bottomAnchor)
         ])
         
         self.view.addSubview(activityIndicator)
         NSLayoutConstraint.activate([
-            activityIndicator.topAnchor.constraint(equalTo: viewForImage.bottomAnchor, constant: 70),
+            activityIndicator.topAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: 50),
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor)
 //            activityIndicator.centerYAnchor.constraint(equalTo: backgroundImage.centerYAnchor)
            // activityIndicator.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -120)
         ])
-        
-        // UIView
-        self.view.addSubview(viewForLabel)
-        viewForLabel.backgroundColor = customColors.colorForView1
-        NSLayoutConstraint.activate([
-            viewForLabel.topAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 70),
-            viewForLabel.heightAnchor.constraint(equalToConstant: 100),
-            viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
-            viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-        ])
-
-        // TEXTLabel
+                
+        // TextLabel
         self.viewForLabel.addSubview(textLbl)
         textLbl.textColor = customColors.colorForTextLbl1
         NSLayoutConstraint.activate([
@@ -134,24 +184,7 @@ extension LoadingViewController {
     }
     
 }
-
 /*
-extension UILabel {
-    func UIfontLabel(viewHeight: Double) {
-        switch viewHeight {
-        case 548.0...568.0:
-            self.font = UIFont(name:  "signpainter-housescript", size: 150)//iPhone 5S,SE
-        case 647.0...667.0:
-            self.font = UIFont(name:  "signpainter-housescript", size: 180)//iPhone 6,7,8
-        case 716.0...736.0:
-            self.font = UIFont(name:  "signpainter-housescript", size: 200)//iPhone 6+,7+,8+
-        case 792...812.0:
-            self.font = UIFont(name:  "signpainter-housescript", size: 180)//iPhone X,XS,XR
-        case 876.0...896.0:
-            self.font = UIFont(name:  "signpainter-housescript", size: 180)//iPhone XS_Max
-        default: print("_____")
-        }
-    }
     
 ==================================
  
