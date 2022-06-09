@@ -13,8 +13,9 @@ struct LoadingScreenModel {
     let textDescription: String
 }
 
+
 protocol LoadingScreenProtocol: class {
-    func setGreeting(greeting: String)
+    func setGreeting(greeting: LoadingScreenModel)
 }
 
 protocol LoadingScreenPresenterProtocol: class {
@@ -25,15 +26,29 @@ protocol LoadingScreenPresenterProtocol: class {
 class LoadingScreenPresenter: LoadingScreenPresenterProtocol {
     
     let view: LoadingScreenProtocol
-    let model: LoadingScreenModel
+    var data: [LoadingScreenModel] = [] {
+        didSet {
+            view.setGreeting(greeting: data)
+        }
+    }
     
-    required init(view: LoadingScreenProtocol, model: LoadingScreenModel) {
+    required init(view: LoadingScreenProtocol) {
         self.view = view
-        self.model = model
+        
+        data = getData()
     }
     
     func showGreeting() {
         let greeting = self.model.textDescription
         self.view.setGreeting(greeting: greeting)
+    }
+}
+
+extension LoadingScreenPresenter {
+    private func getData() -> [LoadingScreenModel] {
+        [
+            LoadingScreenModel(backgroundImage: "", textDescription: "wefefwe feeefwe"),
+            LoadingScreenModel(backgroundImage: "", textDescription: "")
+        ]
     }
 }
