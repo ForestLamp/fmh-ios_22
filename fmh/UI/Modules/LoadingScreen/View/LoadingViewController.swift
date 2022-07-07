@@ -11,12 +11,11 @@ class LoadingViewController: UIViewController {
     
     // MARK: - Properties
     
-    // Презентер:
     private let presenter = Presenter()
     private var testData: [LoadingScreenModel] = []
     private weak var viewOutputDelegate: ViewOutputDelegate?
     
-    private var count = Int.random(in: 0...12)
+    private var count = Int.random(in: 0...16)
     private let customColors = Colors()
     private let screen = UIScreen.main.bounds
     lazy var screenHeight = screen.size.height
@@ -27,6 +26,7 @@ class LoadingViewController: UIViewController {
     private let backgroundImage: UIImageView = {
        let backgroundImage = UIImageView()
         backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        backgroundImage.contentMode = .scaleAspectFill
         return backgroundImage
     }()
     
@@ -39,13 +39,12 @@ class LoadingViewController: UIViewController {
     
     private var activityIndicator : UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.color = UIColor(named: "AccentColor")
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.isHidden = false
         return activityIndicator
     }()
     
-    // UIView
+    // UIView for label
     private var viewForLabel : UIView = {
         let viewForLabel = UIView()
         viewForLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +88,6 @@ extension LoadingViewController {
         
         // UIView for label
         self.view.addSubview(viewForLabel)
-        viewForLabel.backgroundColor = customColors.colorForView1
         switch viewHeight {
         case 548.0...568.0: //iPhone 5S,SE
             NSLayoutConstraint.activate([
@@ -105,28 +103,14 @@ extension LoadingViewController {
                 viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
                 viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ])
-        case 716.0...736.0: //iPhone 6+,7+,8+
+        case 716.0...1896.0: //iPhone 6+,7+,8+,X,XS,XR, XS_Max ...
             NSLayoutConstraint.activate([
                 viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
                 viewForLabel.heightAnchor.constraint(equalToConstant: 100),
                 viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
                 viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ])
-        case 792...875.0: //iPhone X,XS,XR
-            NSLayoutConstraint.activate([
-                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
-                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
-                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
-                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ])
-        case 876.0...1896.0: //iPhone XS_Max
-            NSLayoutConstraint.activate([
-                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
-                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
-                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
-                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ])
-        default: print("_____")
+        default: print("В стэке нет размера экрана этого устройства!")
         }
     }
     
@@ -184,11 +168,13 @@ extension LoadingViewController: ViewInputDelegate {
     func displayData(i: Int) {
         if testData.count >= 0 && count <= (testData.count - 1) && count >= 0 {
             textLbl.text = testData[i].textDescription
+            viewForLabel.backgroundColor = testData[i].color
+            activityIndicator.color = testData[i].color
             if let image = UIImage.init(named: testData[i].backgroundImage) {
                 backgroundImage.image = image
             }
         } else {
-            print("No data!")
+            print("В модели нет данных или они не получены!")
         }
     }
     

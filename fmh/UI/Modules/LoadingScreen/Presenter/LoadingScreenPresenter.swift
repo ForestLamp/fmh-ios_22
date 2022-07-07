@@ -10,7 +10,7 @@ import Foundation
 class Presenter {
     
     weak private var viewInputDelegate: ViewInputDelegate?
-    var testData = LoadingScreenModel.testData
+    var testData = LoadingScreenModel.data
     
     func setViewInputDelegate(viewInputDelegate: ViewInputDelegate?) {
         self.viewInputDelegate = viewInputDelegate
