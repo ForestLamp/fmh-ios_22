@@ -10,5 +10,5 @@ import Foundation
 protocol ViewOutputDelegate: class {
     func getData()
     func saveData()
-    func getRandomCount()
+//    func getRandomCount()
 }

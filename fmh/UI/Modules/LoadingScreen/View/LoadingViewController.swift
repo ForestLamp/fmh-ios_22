@@ -9,173 +9,26 @@ import UIKit
 
 class LoadingViewController: UIViewController {
     
-    // MARK: - Properties
-    
-    private let presenter = Presenter()
-    private var testData: [LoadingScreenModel] = []
-    private weak var viewOutputDelegate: ViewOutputDelegate?
-    
-    private var count = Int.random(in: 0...16)
-    private let customColors = Colors()
+    // MARK: Properties
     private let screen = UIScreen.main.bounds
     lazy var screenHeight = screen.size.height
     
-    // MARK: - UI Elements
-    
-    //Background image
-    private let backgroundImage: UIImageView = {
-       let backgroundImage = UIImageView()
-        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-        backgroundImage.contentMode = .scaleAspectFill
-        return backgroundImage
-    }()
-    
-    // UIView for background image
-    private let viewForBackgroundImage: UIView = {
-       let viewForImage = UIView()
-        viewForImage.translatesAutoresizingMaskIntoConstraints = false
-        return viewForImage
-    }()
-    
-    private var activityIndicator : UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.isHidden = false
-        return activityIndicator
-    }()
-    
-    // UIView for label
-    private var viewForLabel : UIView = {
-        let viewForLabel = UIView()
-        viewForLabel.translatesAutoresizingMaskIntoConstraints = false
-        viewForLabel.layer.cornerRadius = 10
-        return viewForLabel
-    }()
-    
-    //TextLabel
-    private let textLbl: UILabel = {
-        let textLbl = UILabel()
-        textLbl.translatesAutoresizingMaskIntoConstraints = false
-        textLbl.numberOfLines = 0
-        textLbl.adjustsFontSizeToFitWidth = true
-        textLbl.minimumScaleFactor = 0.5
-        textLbl.textAlignment = .center
-        return textLbl
-    }()
-    
-    // MARK: - Life cicle
+    // MARK: Life cicle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        presenter.setViewInputDelegate(viewInputDelegate: self)
-        self.viewOutputDelegate = presenter
-        self.viewOutputDelegate?.getData()
-        
-        setupLayout()
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-        constraintForLabel(viewHeight: screenHeight)
+        view().setupLayout()
+        view().constraintForLabel(viewHeight: screenHeight)
+    }
+    
+    override func loadView() {
+        self.view = Layer()
+    }
+    
+    func view() -> Layer {
+       return self.view as! Layer
     }
 }
 
-    // MARK: - Constraints
-
-extension LoadingViewController {
-    
-    func constraintForLabel(viewHeight: CGFloat) {
-        
-        // UIView for label
-        self.view.addSubview(viewForLabel)
-        switch viewHeight {
-        case 548.0...568.0: //iPhone 5S,SE
-            NSLayoutConstraint.activate([
-                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
-                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
-                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
-                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ])
-        case 647.0...667.0: //iPhone 6,7,8
-            NSLayoutConstraint.activate([
-                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70),
-                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
-                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
-                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ])
-        case 716.0...1896.0: //iPhone 6+,7+,8+,X,XS,XR, XS_Max ...
-            NSLayoutConstraint.activate([
-                viewForLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
-                viewForLabel.heightAnchor.constraint(equalToConstant: 100),
-                viewForLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
-                viewForLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ])
-        default: print("В стэке нет размера экрана этого устройства!")
-        }
-    }
-    
-    func setupLayout() {
-        
-        // View for background image
-        self.view.addSubview(viewForBackgroundImage)
-        viewForBackgroundImage.backgroundColor = customColors.colorForView1
-        NSLayoutConstraint.activate([
-            viewForBackgroundImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            viewForBackgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            viewForBackgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            viewForBackgroundImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/3)
-        ])
-        
-        // BackgroundImage
-        self.viewForBackgroundImage.addSubview(backgroundImage)
-        NSLayoutConstraint.activate([
-            backgroundImage.topAnchor.constraint(equalTo: viewForBackgroundImage.topAnchor),
-            backgroundImage.leadingAnchor.constraint(equalTo: viewForBackgroundImage.leadingAnchor),
-            backgroundImage.trailingAnchor.constraint(equalTo: viewForBackgroundImage.trailingAnchor),
-            backgroundImage.bottomAnchor.constraint(equalTo: viewForBackgroundImage.bottomAnchor)
-        ])
-        
-        self.view.addSubview(activityIndicator)
-        NSLayoutConstraint.activate([
-            activityIndicator.topAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: 50),
-            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-//            activityIndicator.centerYAnchor.constraint(equalTo: backgroundImage.centerYAnchor)
-           // activityIndicator.bottomAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: -120)
-        ])
-                
-        // TextLabel
-        self.viewForLabel.addSubview(textLbl)
-        textLbl.textColor = customColors.colorForTextLbl1
-        NSLayoutConstraint.activate([
-            textLbl.topAnchor.constraint(equalTo: viewForLabel.topAnchor, constant: 10),
-            textLbl.leadingAnchor.constraint(equalTo: viewForLabel.leadingAnchor, constant: 10),
-            textLbl.trailingAnchor.constraint(equalTo: viewForLabel.trailingAnchor, constant: -10),
-            textLbl.bottomAnchor.constraint(equalTo: viewForLabel.bottomAnchor, constant: -20)
-        ])
-    }
-}
-
-extension LoadingViewController: ViewInputDelegate {
-    
-    func setupInitialState() {
-        displayData(i: count)
-    }
-    
-    func setupData(with testData: ([LoadingScreenModel])) {
-        self.testData = testData
-    }
-    
-    func displayData(i: Int) {
-        if testData.count >= 0 && count <= (testData.count - 1) && count >= 0 {
-            textLbl.text = testData[i].textDescription
-            viewForLabel.backgroundColor = testData[i].color
-            activityIndicator.color = testData[i].color
-            if let image = UIImage.init(named: testData[i].backgroundImage) {
-                backgroundImage.image = image
-            }
-        } else {
-            print("В модели нет данных или они не получены!")
-        }
-    }
-    
-}
