@@ -9,13 +9,23 @@ import UIKit
 
 class LoadingViewController: UIViewController {
     
+    // MARK: - Properties
+    
+    // Презентер:
+    private let presenter = Presenter()
+    private var testData: [LoadingScreenModel] = []
+    private weak var viewOutputDelegate: ViewOutputDelegate?
+    
+    private var count = Int.random(in: 0...12)
+    private let customColors = Colors()
+    private let screen = UIScreen.main.bounds
+    lazy var screenHeight = screen.size.height
+    
     // MARK: - UI Elements
     
     //Background image
     private let backgroundImage: UIImageView = {
        let backgroundImage = UIImageView()
-//        backgroundImage.contentMode = .scaleAspectFit
-        backgroundImage.image = UIImage.init(named: "2.png")
         backgroundImage.translatesAutoresizingMaskIntoConstraints = false
         return backgroundImage
     }()
@@ -53,45 +63,22 @@ class LoadingViewController: UIViewController {
         textLbl.textAlignment = .center
         return textLbl
     }()
-        
-    // MARK: - Properties
-    
-    var presenter: LoadingScreenPresenterProtocol!
-    private let customColors = Colors()
-    private let greetings: [String] = Greetings().greeting
-//    private let spinningCircleView = SpinningCircleView()
-    private let screen = UIScreen.main.bounds
-    lazy var screenHeight = screen.size.height
     
     // MARK: - Life cicle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        
+        presenter.setViewInputDelegate(viewInputDelegate: self)
+        self.viewOutputDelegate = presenter
+        self.viewOutputDelegate?.getData()
+        
         setupLayout()
-        setGreeting(greeting: greetings.randomElement()!)
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         constraintForLabel(viewHeight: screenHeight)
-        print(screenHeight)
     }
-}
-
-extension LoadingViewController: LoadingScreenProtocol {
-    
-    func setGreeting(greeting: String) {
-        textLbl.text = greeting
-    }
- /* Custom activity indicator
-     
-     private func configureSpinningCircleView(){
-         spinningCircleView.frame = CGRect(x: view.center.x - 20, y: view.center.y, width: 50, height: 50)
-         view.addSubview(spinningCircleView)
-         spinningCircleView.animate()
-     }
-     */
-    
-
 }
 
     // MARK: - Constraints
@@ -182,58 +169,27 @@ extension LoadingViewController {
             textLbl.bottomAnchor.constraint(equalTo: viewForLabel.bottomAnchor, constant: -20)
         ])
     }
-    
 }
-/*
-    
-==================================
- 
-    iPhone 13 Pro Max     2778
-    iPhone 12 Pro Max     2778
-     
-    iPhone 11 Pro Max     2688
-    iPhone XS Max         2688
-     
-    iPhone 13             2532
-    iPhone 13 Pro         2532
-    iPhone 12             2532
-    iPhone 12 Pro         2532
-     
-    iPhone 11 Pro         2436
-    iPhone XS             2436
-    iPhone X              2436
-     
-    iPhone 12 mini        2340
-    iPhone 13 mini        2340
-      
-    iPhone 8 Plus         1920
-    iPhone 7 Plus         1920
-    iPhone 6s Plus        1920
-    iPhone 6 Plus         1920
-     
-    iPhone 11             1792
-    iPhone XR             1792
-     
-    iPhone SE 2nd gen     1334
-    iPhone 8              1334
-    iPhone 7              1334
-    iPhone 6s             1334
-    iPhone 6              1334
-     
-    iPhone SE             1136
-     
-    iPhone 4s             960
-    
-    switch UIScreen.main.nativeBounds.height {
-            case 960...1334:
-                print("Screen Now - 960...1334")
-            case 1920...2208:
-                print("Screen Now - 1920...2208")
-            case 2436...2778:
-                print("Screen Now - 2426...2778")
-            default:
-                print("Screen Now - default")
-            }
 
+extension LoadingViewController: ViewInputDelegate {
+    
+    func setupInitialState() {
+        displayData(i: count)
+    }
+    
+    func setupData(with testData: ([LoadingScreenModel])) {
+        self.testData = testData
+    }
+    
+    func displayData(i: Int) {
+        if testData.count >= 0 && count <= (testData.count - 1) && count >= 0 {
+            textLbl.text = testData[i].textDescription
+            if let image = UIImage.init(named: testData[i].backgroundImage) {
+                backgroundImage.image = image
+            }
+        } else {
+            print("No data!")
+        }
+    }
+    
 }
- */

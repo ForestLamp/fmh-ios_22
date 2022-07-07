@@ -7,48 +7,36 @@
 
 import Foundation
 
-struct LoadingScreenModel {
+class Presenter {
     
-    let backgroundImage: String
-    let textDescription: String
-}
-
-
-protocol LoadingScreenProtocol: class {
-    func setGreeting(greeting: LoadingScreenModel)
-}
-
-protocol LoadingScreenPresenterProtocol: class {
-    init(view: LoadingScreenProtocol, model: LoadingScreenModel)
-    func showGreeting()
-}
-
-class LoadingScreenPresenter: LoadingScreenPresenterProtocol {
+    weak private var viewInputDelegate: ViewInputDelegate?
+    var testData = LoadingScreenModel.testData
     
-    let view: LoadingScreenProtocol
-    var data: [LoadingScreenModel] = [] {
-        didSet {
-            view.setGreeting(greeting: data)
-        }
+    func setViewInputDelegate(viewInputDelegate: ViewInputDelegate?) {
+        self.viewInputDelegate = viewInputDelegate
     }
     
-    required init(view: LoadingScreenProtocol) {
-        self.view = view
+    private func loadTestData(){
+        self.viewInputDelegate?.setupData(with: self.testData)
+    }
+    private func random(){
+        let randomCount = Int.random(in: 0..<testData.count)
+        self.viewInputDelegate?.displayData(i: randomCount)
+    }
+}
+
+extension Presenter: ViewOutputDelegate {
+    
+    func getRandomCount(){
+        random()
+    }
+    
+    func getData() {
+        self.loadTestData()
+        self.viewInputDelegate?.setupInitialState()
+    }
+    
+    func saveData() {
         
-        data = getData()
-    }
-    
-    func showGreeting() {
-        let greeting = self.model.textDescription
-        self.view.setGreeting(greeting: greeting)
-    }
-}
-
-extension LoadingScreenPresenter {
-    private func getData() -> [LoadingScreenModel] {
-        [
-            LoadingScreenModel(backgroundImage: "", textDescription: "wefefwe feeefwe"),
-            LoadingScreenModel(backgroundImage: "", textDescription: "")
-        ]
     }
 }
